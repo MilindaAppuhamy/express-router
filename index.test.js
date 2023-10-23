@@ -26,7 +26,7 @@ describe("endpoint tests", () => {
 
     it("should create a new user when POST method is called", async () => {
       const newUser = {
-        name: "Dash",
+        name: "Dashie",
         age: 22,
       };
       const res = await request(app).post("/users").send(newUser);
@@ -34,6 +34,17 @@ describe("endpoint tests", () => {
       expect(res.statusCode).toEqual(200);
       expect(res.body.name).toEqual(newUser.name);
       expect(res.body.age).toEqual(newUser.age);
+    });
+
+    it("should return am error if the POST request is sent with empty values", async () => {
+      const newUser = {
+        name: "",
+        age: 22,
+      };
+      const res = await request(app).post("/users").send(newUser);
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body.error.length).toBe(2);
     });
 
     it("should update a user when PUT method is called", async () => {
@@ -79,6 +90,17 @@ describe("endpoint tests", () => {
       expect(res.statusCode).toEqual(200);
       expect(res.body.name).toEqual(newFruit.name);
       expect(res.body.color).toEqual(newFruit.color);
+    });
+
+    it("should return am error if the POST request is sent with empty values", async () => {
+      const newFruit = {
+        name: "Mango",
+        color: "",
+      };
+      const res = await request(app).post("/fruits").send(newFruit);
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body.error.length).toBe(1);
     });
 
     it("should update a fruit when PUT method is called", async () => {
